@@ -16,7 +16,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route:: post('/login', [AuthController::class,'login']);
 Route:: post('/register', [AuthController::class,'register']);
-Route:: post('/otp', [AuthController::class,'otp']);
+Route::post('check-otp', [AuthController::class, 'checkOtp']);
 
 //protected Route
 
