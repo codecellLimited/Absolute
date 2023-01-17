@@ -131,4 +131,13 @@ class AuthController extends Controller
 
         return $this->success([],'You have successfully logged out and your token has been deleted.');
     }
+
+    public function profile(Request $request){
+        
+        $user = $request->user();
+        
+        return $this->success([
+            'user' => $user
+        ]);
+    }
 }
