@@ -24,4 +24,5 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route:: resource('/tasks', TaskController::class);  
     Route:: post('/logout',[AuthController::class,'logout']);
     Route:: get('/profile',[AuthController::class,'profile']);
+    Route:: post('/EditProfile',[AuthController::class,'EditProfile']);
 });

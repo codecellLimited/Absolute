@@ -9,6 +9,7 @@ use App\Http\Requests\LoginUserRequest;
 use App\Mail\EmailVerify;
 use App\Models\User;
 use App\Traits\HttpResponses;
+use App\Http\Controllers\Auth\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -131,7 +132,8 @@ class AuthController extends Controller
 
         return $this->success([],'You have successfully logged out and your token has been deleted.');
     }
-
+    
+    //Show User Profile
     public function profile(Request $request){
         
         $user = $request->user();
@@ -140,4 +142,37 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+
+    //edit User Profile
+    public function EditProfile(Request $request){
+
+        $request->validate([
+            'image' => 'required|image|max:5120',   //store img size= 5MB
+        ]);
+
+        $msg = "record Updated successfully.";
+        try{
+
+            $users = $request->user();
+            $users->image = $request->image->store('image','public');
+            $users->save();
+
+            $user = User::find($users->id)->update([
+                'name'=> $request->first_name." ".$request->last_name,
+                'phone'=> $users->phone,
+                'image'=> \Storage::url($users->image),
+                
+            ]);
+
+        }
+        catch(\Exception $e){
+            $msg = $e->getmessage();
+        }
+
+        
+        return $this->success([
+            'user' =>$users
+            ], $msg);
+    }
+
 }
